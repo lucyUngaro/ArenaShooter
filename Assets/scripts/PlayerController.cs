@@ -30,13 +30,13 @@ public class PlayerController : MonoBehaviour {
 		ship.transform.Translate(x, 0, 0);			
 		ship.transform.Translate(0, y, 0);
 	}
-	void Shoot(){
-		int num = lastMoved == "A" ? -2 : 2;
-		int vel =  lastMoved == "A" ? -40 : 40;
-		var b = (GameObject)Instantiate (bullet, ship.transform.position + new Vector3(num, 0, 0), ship.transform.rotation);
+	void Shoot(){ 
+		var b = (GameObject)Instantiate (bullet, ship.transform.position , ship.transform.rotation);
 		//ignore collision
 		Physics.IgnoreCollision(b.GetComponent<Collider>(), ship.GetComponent<Collider>());
-		b.GetComponent<Rigidbody> ().velocity = new Vector3(vel, 0f, 0f);
+		Vector2 cursorInWorldPos = Camera.main.ScreenToWorldPoint( Input.mousePosition );
+		Vector2 direction = cursorInWorldPos - (Vector2)ship.transform.position;
+		b.GetComponent<Rigidbody> ().velocity = direction;
 		Destroy(b, 1.0f);
 	}
 }
