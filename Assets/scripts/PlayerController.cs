@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour {
 		int num = lastMoved == "A" ? -2 : 2;
 		int vel =  lastMoved == "A" ? -40 : 40;
 		var b = (GameObject)Instantiate (bullet, ship.transform.position + new Vector3(num, 0, 0), ship.transform.rotation);
+		//ignore collision
+		Physics.IgnoreCollision(b.GetComponent<Collider>(), ship.GetComponent<Collider>());
 		b.GetComponent<Rigidbody> ().velocity = new Vector3(vel, 0f, 0f);
 		Destroy(b, 1.0f);
 	}

@@ -16,6 +16,7 @@ public class Teleporter : Enemy {
 	}
 	public override void Activate(){
 		//define the type of enemy here
+		SetHealth(1); 
 		PlaySound(clip);
 	
 	}
