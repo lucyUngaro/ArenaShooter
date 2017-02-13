@@ -8,8 +8,8 @@ public abstract class Enemy : MonoBehaviour {
 	private int health; 
 
 	//manager
-	private GameController _manager;
-    public void SetManager(GameController manager) {
+	private EnemyManager _manager;
+    public void SetManager(EnemyManager manager) {
         _manager = manager;
     }
 
