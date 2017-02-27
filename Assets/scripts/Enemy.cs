@@ -6,8 +6,7 @@ public abstract class Enemy : MonoBehaviour {
 	
 	public abstract void Activate();
 	private int health; 
-	private int speed; 
-
+	private int speed;
 
 	//manager
 	private EnemyManager _manager;
@@ -50,7 +49,7 @@ public abstract class Enemy : MonoBehaviour {
 		if(col.gameObject.tag == "bullet"){
 			health = GetHealth(); 
 			SetHealth(health-1);
-			if(GetHealth()<=0){
+			if(GetHealth()<=0){	
 				_manager.DestroyEnemy(this, this.gameObject);
 				EventManager.Instance.Fire(new EnemyKilledEvent()); 
 			}

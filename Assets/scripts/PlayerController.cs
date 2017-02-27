@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
 	string lastMoved;
 	void Start(){
 		ship = GameObject.Find("Ship");
+		EventManager.Instance.AddListener<EnemyKilledEvent> (OnEnemyKilled);
 	}
 	// Update is called once per frame
 	void Update () {
@@ -38,5 +39,8 @@ public class PlayerController : MonoBehaviour {
 		Vector2 direction = cursorInWorldPos - (Vector2)ship.transform.position;
 		b.GetComponent<Rigidbody> ().velocity = direction;
 		Destroy(b, 1.0f);
+	}
+	void OnEnemyKilled(EnemyKilledEvent e){
+		ship.transform.localScale *= .8f; 
 	}
 }
