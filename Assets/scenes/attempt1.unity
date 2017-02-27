@@ -416,6 +416,8 @@ MonoBehaviour:
     type: 2}
   teleporterPrefab: {fileID: 114513623697244596, guid: 0c17b310b1d25d14ca145b5912c262c7,
     type: 2}
+  speedyPrefab: {fileID: 114889580933206718, guid: 054b809fdcba1504982339d4cebd1f6a,
+    type: 2}
 --- !u!4 &1265313754
 Transform:
   m_ObjectHideFlags: 0

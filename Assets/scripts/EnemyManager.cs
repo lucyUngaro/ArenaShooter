@@ -12,14 +12,14 @@ public class EnemyManager : MonoBehaviour {
 	//enemy prefabs
 	public Sniper sniperPrefab; 
 	public Teleporter teleporterPrefab; 
+	public Speedy speedyPrefab; 
 
 	//vars
 	int curWave = 1;
 	bool waveComplete = true;
 
 	void Start () {
-		GetLimits();
-		
+		GetLimits(); 
 	}
 	public void Update(){
 		if(waveComplete){
@@ -77,6 +77,7 @@ public class EnemyManager : MonoBehaviour {
 			CreateEnemy(sniperPrefab, loc); 
 		}
 		CreateEnemy(teleporterPrefab, RandomizeLocation()); 
+		CreateEnemy (speedyPrefab, RandomizeLocation ()); 
 	}
 	//third wave
 	public void WaveThree(){
@@ -93,5 +94,4 @@ public class EnemyManager : MonoBehaviour {
 		Random.Range (wallDown.transform.position.y, wallUp.transform.position.y), 0);
 		return loc; 
 	}
-	
 }
