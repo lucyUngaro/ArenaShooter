@@ -52,6 +52,8 @@
      <Compile Include="Assets\scripts\PlayerController.cs" />
      <Compile Include="Assets\scripts\Sniper.cs" />
      <Compile Include="Assets\scripts\Speedy.cs" />
+     <Compile Include="Assets\scripts\Task.cs" />
+     <Compile Include="Assets\scripts\TaskManagr.cs" />
      <Compile Include="Assets\scripts\Teleporter.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
