@@ -62,6 +62,8 @@ public abstract class Task{
 
 	protected virtual void CleanUp() {}
 
+	public virtual void UpdateTask() {}
+
 	//set the next task and then the task after it
 	public Task NextTask { get; private set; }
 

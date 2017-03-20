@@ -24,6 +24,7 @@ public class TaskManagr
 		// clear it if it's done
 		for (int i = _tasks.Count-1; i >= 0; i --)
 		{
+			_tasks [i].UpdateTask ();
 			//if the task was just attached it's pending
 			if(_tasks[i].IsPending)
 			{

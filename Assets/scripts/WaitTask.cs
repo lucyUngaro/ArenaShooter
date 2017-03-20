@@ -11,7 +11,8 @@ public class WaitTask : Task {
 		_duration = d;
 	}           
 	// Update is called once per frame
-	public void UpdateTime () {
+	public override void UpdateTask()
+	{
 		curTime += Time.deltaTime;
 		if(curTime >= _duration){
 			SetStatus (TaskStatus.Success);

@@ -28,7 +28,7 @@ public class EnemyManager : MonoBehaviour {
 		if(waveComplete){
 			switch(curWave){
 				case 1:
-					Invoke("WaveOne", 1); 
+					Invoke("WaveFour", 1); 
 					waveComplete = false; 
 					break; 
 				case 2:

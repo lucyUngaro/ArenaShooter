@@ -51,21 +51,5 @@ public class BossSequence : MonoBehaviour {
 	void Update()
 	{
 		tm.Update ();
-		if (ScaleBoss2.IsWorking) {
-			ScaleBoss2.ScaleObj ();
-		}
-		if (ScaleBoss1.IsWorking) {
-			ScaleBoss1.ScaleObj ();
-		}
-		if (Wait1.IsWorking) {
-			Wait1.UpdateTime ();
-		}
-		if (SpawnEnemies.IsWorking) {
-			SpawnEnemies.SpawnObject ();
-			if (boss.Health() <= boss.FullHealth/2) {
-				SpawnEnemies.SetStatus (Task.TaskStatus.Success);
-			}
-		}
-		
 	}
 }

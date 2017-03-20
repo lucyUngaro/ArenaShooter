@@ -17,7 +17,8 @@ public class SpawnTask : Task {
 	protected override void OnSuccess(){
 		canSpawn = false;
 	}
-	public void SpawnObject () {
+	public override void UpdateTask()
+	{
 		timePassed += Time.deltaTime;
 
 		if (canSpawn && timePassed >= 3f) {

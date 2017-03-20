@@ -16,13 +16,7 @@ public class ScaleTask : Task {
 		_finalScale = s;
 	}
 
-	protected override void Init()
-	{
-		ScaleObj ();
-
-	}
-
-	public void ScaleObj()
+	public override void UpdateTask()
 	{
 		if (_boss.transform.localScale != _finalScale) {
 			_boss.transform.localScale = Vector3.Lerp (_boss.transform.localScale, _finalScale, Time.deltaTime * 10f);
