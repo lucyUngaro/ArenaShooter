@@ -418,6 +418,9 @@ MonoBehaviour:
     type: 2}
   speedyPrefab: {fileID: 114889580933206718, guid: 054b809fdcba1504982339d4cebd1f6a,
     type: 2}
+  bossPrefab: {fileID: 114825177171453714, guid: 86715221dee97d74dbbb25335464d65d,
+    type: 2}
+  boss: {fileID: 0}
 --- !u!4 &1265313754
 Transform:
   m_ObjectHideFlags: 0

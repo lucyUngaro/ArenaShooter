@@ -22,8 +22,9 @@ public class Teleporter : Enemy {
 	}
 	IEnumerator move(){
 		while(true){
-			Teleport(leftWall.transform.position.x, rightWall.transform.position.x, upWall.transform.position.y, downWall.transform.position.y);
 			yield return new WaitForSeconds(1f); 
+			Teleport(leftWall.transform.position.x, rightWall.transform.position.x, upWall.transform.position.y, downWall.transform.position.y);
+
 		}
 	}
 }

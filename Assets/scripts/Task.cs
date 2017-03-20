@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Task {
+public abstract class Task{
 
 	public enum TaskStatus : byte{
 		Detached,
@@ -26,6 +26,10 @@ public class Task {
 	public bool IsFinished { get { return (Status == TaskStatus.Fail || Status == TaskStatus.Success || Status == TaskStatus.Aborted); } }
 
 	internal void SetStatus(TaskStatus s){
+		if (Status == s) return;
+
+		Status = s; 
+
 		switch(s){
 			case TaskStatus.Working:
 				Init ();
@@ -58,5 +62,13 @@ public class Task {
 
 	protected virtual void CleanUp() {}
 
+	//set the next task and then the task after it
+	public Task NextTask { get; private set; }
 
+	public Task Then(Task task)
+	{
+		Debug.Assert(!task.IsAttached);
+		NextTask = task;
+		return task;
+	}
 }

@@ -45,6 +45,7 @@ public abstract class Enemy : MonoBehaviour {
 		 audio.clip = enemySound; 
 		 audio.Play(); 
 	}
+
 	void OnCollisionEnter(Collision col){
 		if(col.gameObject.tag == "bullet"){
 			health = GetHealth(); 

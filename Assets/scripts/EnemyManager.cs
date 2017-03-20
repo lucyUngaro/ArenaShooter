@@ -13,7 +13,10 @@ public class EnemyManager : MonoBehaviour {
 	public Sniper sniperPrefab; 
 	public Teleporter teleporterPrefab; 
 	public Speedy speedyPrefab; 
+	public Boss bossPrefab;
 
+	//Boss
+	public Boss boss;
 	//vars
 	int curWave = 1;
 	bool waveComplete = true;
@@ -36,6 +39,10 @@ public class EnemyManager : MonoBehaviour {
 					Invoke("WaveThree", 1);
 					waveComplete=false; 
 					break;
+				case 4:
+					Invoke("WaveFour", 1);
+					waveComplete = false;
+					break;
 				default: 
 					break; 
 			}
@@ -51,10 +58,11 @@ public class EnemyManager : MonoBehaviour {
 		wallDown = GameObject.Find("walls/wallDown");
 	}
 	//create enemy
-	void CreateEnemy(Enemy enemy, Vector3 location){
+	public void CreateEnemy(Enemy enemy, Vector3 location){
 		Enemy newEnemy = (Enemy)Instantiate (enemy, location, Quaternion.identity);
 		enemies.Add(newEnemy); 
 		newEnemy.SetManager(this);
+		if(boss!=null) Physics.IgnoreCollision (newEnemy.GetComponent<Collider> (), boss.GetComponent<Collider> ());
 	}
 	//destroy enemy
 	public void DestroyEnemy(Enemy enemy, GameObject g){
@@ -64,6 +72,19 @@ public class EnemyManager : MonoBehaviour {
 			waveComplete=true;
 			curWave++; 
 		}
+	}
+	//random enemy type
+	public void CreateRandomEnemy(Vector3 loc){
+		int num = (int) Random.Range (0f, 3f);
+	
+		if (num == 0) {
+			CreateEnemy (sniperPrefab, loc);
+		} else if (num == 1) {
+			CreateEnemy (teleporterPrefab, loc);
+		} else {
+			CreateEnemy (speedyPrefab, loc);
+		}
+	
 	}
 	//first wave
 	public void WaveOne(){
@@ -88,6 +109,13 @@ public class EnemyManager : MonoBehaviour {
 			CreateEnemy(teleporterPrefab, RandomizeLocation()); 
 		}
 
+	}
+	//fourth wave
+	public void WaveFour(){ 
+		CreateEnemy(bossPrefab, Camera.main.ScreenToWorldPoint(new Vector3(Screen.width/2, Screen.height/2, 0f)));
+		boss = (Boss) enemies [0];
+		boss.transform.position = new Vector3 (boss.transform.position.x, boss.transform.position.y, 0);
+		boss.GetComponent<Renderer> ().enabled = false;
 	}
 	public Vector3 RandomizeLocation(){
 		Vector3 loc = new Vector3(Random.Range(wallLeft.transform.position.x, wallRight.transform.position.x), 

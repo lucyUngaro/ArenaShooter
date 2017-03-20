@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 	public GameObject bullet; 
 	public GameObject ship; 
-	string lastMoved;
+
 	void Start(){
 		ship = GameObject.Find("Ship");
 		EventManager.Instance.AddListener<EnemyKilledEvent> (OnEnemyKilled);
@@ -15,12 +15,6 @@ public class PlayerController : MonoBehaviour {
 		Move ();
 		if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space)){
 			Shoot ();
-		}
-		if(Input.GetKeyDown(KeyCode.A)){
-			lastMoved = "A";
-		}
-		else if(Input.GetKeyDown(KeyCode.D)){
-			lastMoved = "D";
 		}
 	
 	}

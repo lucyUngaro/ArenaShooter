@@ -9,7 +9,7 @@ public class Speedy : Enemy {
 
 	public void Start(){
 		Activate(); 
-		SetHealth(10); 
+		SetHealth(3); 
 		SetSpeed (1); 
 		EventManager.Instance.AddListener<EnemyKilledEvent> (OnEnemyKilled);
 	
