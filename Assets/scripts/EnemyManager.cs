@@ -14,9 +14,11 @@ public class EnemyManager : MonoBehaviour {
 	public Teleporter teleporterPrefab; 
 	public Speedy speedyPrefab; 
 	public Boss bossPrefab;
+	public AIEnemy aiPrefab;
 
 	//Boss
 	public Boss boss;
+	Enemy prevEnemy; 
 	//vars
 	int curWave = 1;
 	bool waveComplete = true;
@@ -28,7 +30,7 @@ public class EnemyManager : MonoBehaviour {
 		if(waveComplete){
 			switch(curWave){
 				case 1:
-					Invoke("WaveFour", 1); 
+					Invoke("WaveFive", 1); 
 					waveComplete = false; 
 					break; 
 				case 2:
@@ -40,6 +42,10 @@ public class EnemyManager : MonoBehaviour {
 					waveComplete=false; 
 					break;
 				case 4:
+					Invoke("WaveFour", 1);
+					waveComplete = false;
+					break;
+				case 5:
 					Invoke("WaveFour", 1);
 					waveComplete = false;
 					break;
@@ -62,7 +68,8 @@ public class EnemyManager : MonoBehaviour {
 		Enemy newEnemy = (Enemy)Instantiate (enemy, location, Quaternion.identity);
 		enemies.Add(newEnemy); 
 		newEnemy.SetManager(this);
-		if(boss!=null) Physics.IgnoreCollision (newEnemy.GetComponent<Collider> (), boss.GetComponent<Collider> ());
+		if(prevEnemy!=null) Physics.IgnoreCollision (newEnemy.GetComponent<Collider> (), prevEnemy.GetComponent<Collider> ()); 
+		prevEnemy = newEnemy; 
 	}
 	//destroy enemy
 	public void DestroyEnemy(Enemy enemy, GameObject g){
@@ -116,6 +123,10 @@ public class EnemyManager : MonoBehaviour {
 		boss = (Boss) enemies [0];
 		boss.transform.position = new Vector3 (boss.transform.position.x, boss.transform.position.y, 0);
 		boss.GetComponent<Renderer> ().enabled = false;
+	}
+	//fifth wave
+	public void WaveFive(){
+		CreateEnemy (aiPrefab, RandomizeLocation ());
 	}
 	public Vector3 RandomizeLocation(){
 		Vector3 loc = new Vector3(Random.Range(wallLeft.transform.position.x, wallRight.transform.position.x), 

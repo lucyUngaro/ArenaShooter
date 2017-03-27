@@ -193,7 +193,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &408728409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,7 +378,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bde0dacb0644a644eac6eaaa5aa7982c, type: 3}
-  m_Color: {r: 0.09558821, g: 0.09558821, b: 0.09558821, a: 1}
+  m_Color: {r: 0.75, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
 --- !u!1 &1265313752
@@ -418,8 +418,9 @@ MonoBehaviour:
     type: 2}
   speedyPrefab: {fileID: 114889580933206718, guid: 054b809fdcba1504982339d4cebd1f6a,
     type: 2}
-  bossPrefab: {fileID: 114825177171453714, guid: 86715221dee97d74dbbb25335464d65d,
+  bossPrefab: {fileID: 114625947616141354, guid: f9f47662c00daa0499b822a1b5b18bda,
     type: 2}
+  aiPrefab: {fileID: 114984759092034490, guid: 8f7d65af6f36962499f834f601d931f5, type: 2}
   boss: {fileID: 0}
 --- !u!4 &1265313754
 Transform:
@@ -769,6 +770,7 @@ GameObject:
   - component: {fileID: 2013922635}
   - component: {fileID: 2013922634}
   - component: {fileID: 2013922639}
+  - component: {fileID: 2013922633}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Untagged
@@ -776,6 +778,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2013922633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2013922632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0ffd7af0f2c7f34b8abcd20530c489e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 1405166730071232, guid: 95d53dc870f56ee4d8741b8f4a9865d3, type: 2}
+  ship: {fileID: 0}
 --- !u!23 &2013922634
 MeshRenderer:
   m_ObjectHideFlags: 0

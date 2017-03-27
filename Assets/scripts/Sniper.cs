@@ -17,7 +17,7 @@ public class Sniper : Enemy {
 	
 	}
 	public void Update(){
-		FollowPlayer(player); 
+		TravelToPoint(player.transform.position); 
 	
 	}
 

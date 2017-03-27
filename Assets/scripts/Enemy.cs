@@ -17,6 +17,10 @@ public abstract class Enemy : MonoBehaviour {
 	//toys for the sandbox:
 	protected void SetHealth(int num){
 		health = num; 
+		if(GetHealth()<=0){	
+			_manager.DestroyEnemy(this, this.gameObject);
+			EventManager.Instance.Fire(new EnemyKilledEvent()); 
+		}
 	}
 	protected int GetHealth(){
 		return health; 
@@ -31,8 +35,11 @@ public abstract class Enemy : MonoBehaviour {
 		Vector3 newLocation = new Vector3(Random.Range(leftLimit, rightLimit), Random.Range(lowerLimit, upperLimit), 0);
 		transform.position = newLocation; 
 	}
-	protected void FollowPlayer(GameObject player){
-		Vector3 directionToPlayer = player.transform.position - transform.position; 
+	protected Vector3 PickRandomPosition(float leftLimit, float rightLimit, float upperLimit, float lowerLimit){
+		return new Vector3(Random.Range(leftLimit, rightLimit), Random.Range(lowerLimit, upperLimit), 0);
+	}
+	protected void TravelToPoint(Vector3 pos){
+		Vector3 directionToPlayer = pos - transform.position; 
 		GetComponent<Rigidbody>().AddForce(directionToPlayer.normalized);
 	}
 	protected void Move(float leftLimit, float rightLimit, float upperLimit, float lowerLimit){
@@ -45,7 +52,13 @@ public abstract class Enemy : MonoBehaviour {
 		 audio.clip = enemySound; 
 		 audio.Play(); 
 	}
-
+	protected bool Explode(GameObject player, float radius){
+		if(Vector3.Distance(transform.position, player.transform.position) <= radius){
+			player.GetComponent<PlayerController>().TakeDamage(9);
+			return true;
+		}
+		return false; 
+	}
 	void OnCollisionEnter(Collision col){
 		if(col.gameObject.tag == "bullet"){
 			health = GetHealth(); 

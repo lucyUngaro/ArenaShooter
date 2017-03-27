@@ -5,10 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 	public GameObject bullet; 
 	public GameObject ship; 
-
+	private int health; 
 	void Start(){
 		ship = GameObject.Find("Ship");
-		EventManager.Instance.AddListener<EnemyKilledEvent> (OnEnemyKilled);
 	}
 	// Update is called once per frame
 	void Update () {
@@ -34,7 +33,14 @@ public class PlayerController : MonoBehaviour {
 		b.GetComponent<Rigidbody> ().velocity = direction;
 		Destroy(b, 1.0f);
 	}
-	void OnEnemyKilled(EnemyKilledEvent e){
-		ship.transform.localScale *= .8f; 
+	public void TakeDamage(int damage){
+		ship.transform.localScale *= .5f; 
+		SetHealth (health - damage);
+	}
+	public int GetHealth(){
+		return health;
+	}
+	public void SetHealth(int num){
+		health = num; 
 	}
 }

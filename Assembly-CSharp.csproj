@@ -46,12 +46,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\scripts\AIEnemy.cs" />
      <Compile Include="Assets\scripts\ActionTask.cs" />
      <Compile Include="Assets\scripts\Boss.cs" />
      <Compile Include="Assets\scripts\BossSequence.cs" />
      <Compile Include="Assets\scripts\Enemy.cs" />
      <Compile Include="Assets\scripts\EnemyManager.cs" />
      <Compile Include="Assets\scripts\EventManager.cs" />
+     <Compile Include="Assets\scripts\FSM.cs" />
      <Compile Include="Assets\scripts\PlayerController.cs" />
      <Compile Include="Assets\scripts\ScaleTask.cs" />
      <Compile Include="Assets\scripts\Sniper.cs" />
