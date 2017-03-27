@@ -127,6 +127,7 @@ public class EnemyManager : MonoBehaviour {
 	//fifth wave
 	public void WaveFive(){
 		CreateEnemy (aiPrefab, RandomizeLocation ());
+
 	}
 	public Vector3 RandomizeLocation(){
 		Vector3 loc = new Vector3(Random.Range(wallLeft.transform.position.x, wallRight.transform.position.x), 

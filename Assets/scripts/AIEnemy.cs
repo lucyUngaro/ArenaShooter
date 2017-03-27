@@ -6,7 +6,10 @@ public class AIEnemy : Enemy {
 	
 	public GameObject player; 
 
-	private AIEnemy.State state; 
+	//private AIEnemy.State state; 
+
+	private FSM<AIEnemy> _fsm;
+
 
 	//limits of space
 	public GameObject wallLeft, wallRight, wallUp, wallDown; 
@@ -20,18 +23,15 @@ public class AIEnemy : Enemy {
 	private int curHealth;
 
 	public void Start(){
+		_fsm = new FSM<AIEnemy> (this);
+		_fsm.TransitionTo<Seeking>();
+
 		wallLeft = GameObject.Find("walls/wallLeft");
 		wallRight = GameObject.Find("walls/wallRight");
 		wallUp = GameObject.Find("walls/wallUp");
 		wallDown = GameObject.Find("walls/wallDown");
 
 		Activate ();
-	}
-	public enum State {
-		Seeking,
-		Preparing,
-		Attacking,
-		Fleeing
 	}
 
 	public override void Activate ()
@@ -48,60 +48,15 @@ public class AIEnemy : Enemy {
 
 	}
 
-
+	public Vector3 PickPosition(){
+		return PickRandomPosition (wallLeft.transform.position.x, wallRight.transform.position.x, wallUp.transform.position.y, 
+			wallDown.transform.position.y);
+	}
 	public void Update(){
-		switch (state) {
-		case State.Seeking:
-			TravelToPoint (player.transform.position);
-			if (GetDistance(player.transform.position) <= 2f) {
-				curHealth = GetHealth ();
-				state = State.Preparing;
-				transform.GetComponent<Rigidbody> ().velocity = Vector3.zero; 
-			}
-			break;
-		case State.Preparing:
-			Invoke ("Pulse", 1);
-			if (totalPulses < lerpTimes && curHealth > GetHealth ()) {
-				state = State.Fleeing; 
-				StopCoroutine (LerpScale ());
-			} else if (totalPulses >= lerpTimes) {
-				state = State.Attacking; 
-			}
-			break; 
-		case State.Attacking:
-			totalPulses = 0; 
-			TravelToPoint (player.transform.position);
-			if (GetDistance (player.transform.position) <= 2f) {
-				bool hitPlayer = Explode (player, 2f);
-				if (hitPlayer) SetHealth (0);
-				state = State.Seeking; 
-			}
-			break; 
-		case State.Fleeing:
-			Vector3 pos = new Vector3 (0f, 0f, 0f);
-			if (!traveling) {
-				pos = PickRandomPosition (wallLeft.transform.position.x, wallRight.transform.position.x, wallUp.transform.position.y, 
-					wallDown.transform.position.y);
-				TravelToPoint (pos);
-			}
-			if (GetDistance(pos) <= 2f) {
-				transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-				state = State.Seeking; 
-				traveling = false;
-			}
-
-			break; 
-			
-		default:
-			break;
-		}
+		_fsm.Update ();
 	}
-	float GetDistance(Vector3 g)
-	{
-		
-		return Vector3.Distance (transform.position, g);
 
-	}
+
 	void Pulse(){
 		if (!crRunning && totalPulses < lerpTimes) {
 			totalPulses++;
@@ -109,7 +64,9 @@ public class AIEnemy : Enemy {
 		}
 	}
 	IEnumerator LerpScale(){
+		if (crRunning) yield break; 
 		crRunning = true; 
+		yield return new WaitForSeconds (0.5f);
 		Vector3 initialScale = transform.localScale;
 		while(transform.localScale != initialScale * lerpAmount){
 			transform.localScale = Vector3.Lerp(transform.localScale, initialScale * lerpAmount, timePassed);
@@ -126,5 +83,83 @@ public class AIEnemy : Enemy {
 		}
 		timePassed = 0;
 		crRunning = false;
+	}
+
+	private class AIEnemyState : FSM<AIEnemy>.State {
+
+
+		protected float GetDistance(Vector3 g)
+		{
+
+			return Vector3.Distance (Context.transform.position, g);
+
+		}
+
+		protected void TravelToPoint(Vector3 pt){
+			Vector3 directionToPlayer = pt - Context.transform.position; 
+			Context.transform.GetComponent<Rigidbody>().AddForce(directionToPlayer.normalized);
+
+		}
+
+	}
+	private class Seeking : AIEnemyState{
+		public override void Update(){
+			TravelToPoint (Context.player.transform.position);
+
+			if (GetDistance (Context.player.transform.position) <= 2f) {
+
+				TransitionTo<Preparing> (); 
+				Context.curHealth = Context.GetHealth (); 
+				Context.GetComponent<Rigidbody> ().velocity = Vector3.zero; 
+			}
+		}
+	}
+	private class Preparing : AIEnemyState{
+
+		public override void Update(){
+			Context.Pulse (); 
+			if (Context.totalPulses < Context.lerpTimes && Context.curHealth > Context.GetHealth ()) {
+				Context.StopCoroutine (Context.LerpScale ());
+				TransitionTo<Fleeing> (); 
+			} else if (Context.totalPulses >= Context.lerpTimes) {
+				TransitionTo<Attacking>(); 
+			}
+		}
+
+
+	}
+	private class Fleeing : AIEnemyState{
+		Vector3 pos;
+		public override void OnEnter(){
+			pos = Context.PickPosition ();
+			TravelToPoint (pos);
+
+		}
+		public override void Update(){
+			if (GetDistance (pos) <= 2f) {
+				Context.transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				TransitionTo<Seeking> ();
+			}
+		}
+
+	}
+	private class Attacking : AIEnemyState{
+
+		public override void OnEnter(){
+
+			Context.totalPulses = 0; 
+
+		}
+
+		public override void Update(){
+			TravelToPoint (Context.player.transform.position);
+			if(GetDistance(Context.player.transform.position) <= 2f){
+				bool hitPlayer = Context.Explode (Context.player, 2f);
+				if (hitPlayer) Context.SetHealth (0);
+				TransitionTo<Seeking>(); 
+			}
+
+		}
+
 	}
 }

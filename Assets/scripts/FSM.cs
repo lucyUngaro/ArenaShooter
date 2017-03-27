@@ -6,7 +6,7 @@ using UnityEngine.UI;
 // To make it a little easier to reference the state machine's context we make the FSM
 // a generic class that is parameterized on the context type. This way states in the
 // machine won't have to cast the context when accessing it.
-public class FSM<TContext> : MonoBehaviour
+public class FSM<TContext> 
 {
 	// States are going to need access to the objects whose state they represent (e.g. PlayerStates
 	// need to have access to a player object) The state machine keeps a reference to that context
@@ -42,6 +42,8 @@ public class FSM<TContext> : MonoBehaviour
 		CurrentState.Update();
 		// Handle any pending transition that might have happened during the update
 		PerformPendingTransition();
+
+		CurrentState.Update ();
 	}
 
 	// Queues transition to a new state
@@ -54,6 +56,7 @@ public class FSM<TContext> : MonoBehaviour
 	// Actually transition to any pending state
 	private void PerformPendingTransition()
 	{
+
 		if (_pendingState != null)
 		{
 			if (CurrentState != null) CurrentState.OnExit();
