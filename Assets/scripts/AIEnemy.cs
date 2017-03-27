@@ -53,7 +53,7 @@ public class AIEnemy : Enemy {
 		switch (state) {
 		case State.Seeking:
 			TravelToPoint (player.transform.position);
-			if (GetDistance(player) <= 2f) {
+			if (GetDistance(player.transform.position) <= 2f) {
 				curHealth = GetHealth ();
 				state = State.Preparing;
 				transform.GetComponent<Rigidbody> ().velocity = Vector3.zero; 
@@ -69,30 +69,37 @@ public class AIEnemy : Enemy {
 			}
 			break; 
 		case State.Attacking:
+			totalPulses = 0; 
 			TravelToPoint (player.transform.position);
-			if (GetDistance (player) <= 2f) {
+			if (GetDistance (player.transform.position) <= 2f) {
 				bool hitPlayer = Explode (player, 2f);
 				if (hitPlayer) SetHealth (0);
 				state = State.Seeking; 
 			}
 			break; 
 		case State.Fleeing:
-			Vector3 pos = PickRandomPosition (wallLeft.transform.position.x, wallRight.transform.position.x, wallUp.transform.position.y, 
-				              wallDown.transform.position.y);
-			TravelToPoint (pos);
-			if (transform.position == pos) {
-				state = State.Seeking; 
+			Vector3 pos = new Vector3 (0f, 0f, 0f);
+			if (!traveling) {
+				pos = PickRandomPosition (wallLeft.transform.position.x, wallRight.transform.position.x, wallUp.transform.position.y, 
+					wallDown.transform.position.y);
+				TravelToPoint (pos);
 			}
+			if (GetDistance(pos) <= 2f) {
+				transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				state = State.Seeking; 
+				traveling = false;
+			}
+
 			break; 
 			
 		default:
 			break;
 		}
 	}
-	float GetDistance(GameObject g)
+	float GetDistance(Vector3 g)
 	{
 		
-		return Vector3.Distance (transform.position, g.transform.position);
+		return Vector3.Distance (transform.position, g);
 
 	}
 	void Pulse(){
@@ -117,6 +124,7 @@ public class AIEnemy : Enemy {
 			timePassed += Time.deltaTime * lerpSpeed;
 			yield return null;
 		}
+		timePassed = 0;
 		crRunning = false;
 	}
 }

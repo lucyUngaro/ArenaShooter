@@ -8,6 +8,8 @@ public abstract class Enemy : MonoBehaviour {
 	private int health; 
 	private int speed;
 
+	public bool traveling = false;
+
 	//manager
 	private EnemyManager _manager;
     public void SetManager(EnemyManager manager) {
@@ -46,6 +48,7 @@ public abstract class Enemy : MonoBehaviour {
 		Vector3 ranDirection = new Vector3 (Random.Range (leftLimit, rightLimit), Random.Range (lowerLimit, upperLimit), 0); 
 		Vector3 directionToPoint = ranDirection - transform.position; 
 		GetComponent<Rigidbody>().AddForce(directionToPoint.normalized*speed);
+		traveling = true; 
 	}
 	protected void PlaySound(AudioClip enemySound){
 		 AudioSource audio = GetComponent<AudioSource>();
